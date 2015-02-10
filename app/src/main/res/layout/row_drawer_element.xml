@@ -13,6 +13,7 @@
 
         <ImageView
             android:id="@+id/emblem"
+            android:padding="5dp"
             android:layout_width="@dimen/drawer_element_height"
             android:layout_height="@dimen/drawer_element_height"
             android:src="@drawable/ic_0" />

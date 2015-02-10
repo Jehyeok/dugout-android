@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navi_bar_height"
+        android:background="@color/navi_background" >
+
+        <ImageButton
+            android:id="@+id/boardDetailBackBtn"
+            android:layout_width="@dimen/navi_bar_height"
+            android:layout_height="@dimen/navi_bar_height"
+            android:background="@null"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_back_btn" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="글쓰기"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/boardWriteWriteBtn"
+            android:layout_width="@dimen/navi_bar_height"
+            android:layout_height="@dimen/navi_bar_height"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:scaleType="centerInside"
+            android:text="등록"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/boardWriteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:ems="10"
+                android:hint="제목을 작성해주세요"
+                android:paddingLeft="10dp"
+                android:lines="1"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#979797"></LinearLayout>
+
+            <EditText
+                android:id="@+id/boardWriteContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:ems="10"
+                android:gravity="top|left"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:hint="내용을 작성해주세요"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

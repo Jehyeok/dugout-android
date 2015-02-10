@@ -55,18 +55,18 @@ public class AsyncHttpTask extends AsyncTask<String, String, Void> {
     @Override
     protected Void doInBackground(String... params) {
         MyApplication.localContext.setAttribute(ClientContext.COOKIE_STORE, MyApplication.cookieStore);
-        String cookie = MyApplication.preferences.getString("_anonymous_session", "");
-        Log.d("AsyncTask", "_anonymous_session: " + cookie);
+        String cookie = MyApplication.preferences.getString("_dugout_session", "");
+        Log.d("AsyncTask", "_dugout_session: " + cookie);
 
         try {
             HttpResponse httpResponse = null;
             if (method.equals("GET")) {
                 httpGet = new HttpGet(url);
-                httpGet.setHeader("Cookie", "_anonymous_session=" + cookie + ";");
+                httpGet.setHeader("Cookie", "_dugout_session=" + cookie + ";");
                 httpResponse = httpClient.execute(httpGet, MyApplication.localContext);
             } else if (method.equals("POST")) {
                 httpPost = new HttpPost(url);
-                httpPost.setHeader("Cookie", "_anonymous_session=" + cookie + ";");
+                httpPost.setHeader("Cookie", "_dugout_session=" + cookie + ";");
 
                 if (params != null) {
                     MultipartEntityBuilder builder = MultipartEntityBuilder.create();

@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yjkim.comment.CommentListFragment;
 import com.yjkim.drawer.DrawerElement;
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
@@ -49,16 +50,17 @@ public class BoardActivity extends ActionBarActivity {
             }
         });
 
+//        댓글 달기
         Button writeCommentBtn = (Button) findViewById(R.id.writeCommentBtn);
         final EditText commentContent = (EditText) findViewById(R.id.commentContent);
 
         writeCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = MyApplication.host + "comments.json";
+                String url = MyApplication.host + "boards/" + extras.getString("boardId") + "/comments";
                 String method = "POST";
 
-                AsyncHttpTask asyncTask = new AsyncHttpTask(MyApplication.httpClient, method, getApplicationContext());
+                AsyncHttpTask asyncTask = new AsyncHttpTask(MyApplication.httpClient, method, BoardActivity.this);
                 asyncTask.setListener(new OnTaskCompleted() {
                     @Override
                     public void onTaskCompleted(String result) {
@@ -70,12 +72,16 @@ public class BoardActivity extends ActionBarActivity {
                         } else {
 //                            글쓰기 성공
                             commentContent.setText("");
+                            hideSoftKeyboard(BoardActivity.this);
+                            loadData(MyApplication.host + "groups/0/boards/" + extras.getString("boardId"), "GET");
                         }
                     }
                 });
                 asyncTask.setUrl(url);
 //                파라미터 세팅
-                asyncTask.execute();
+                asyncTask.execute(
+                        "content: " + commentContent.getText().toString()
+                );
             }
         });
 
@@ -106,6 +112,8 @@ public class BoardActivity extends ActionBarActivity {
                     TextView boardDetailCount = (TextView) findViewById(R.id.boardDetailCount);
                     TextView boardDetailUpdatedAt = (TextView) findViewById(R.id.boardDetailUpdatedAt);
                     TextView boardDetailContent = (TextView) findViewById(R.id.boardDetailContent);
+                    TextView likeCount = (TextView) findViewById(R.id.likeCount);
+                    TextView dislikeCount = (TextView) findViewById(R.id.dislikeCount);
 
                     String titleText = "";
 
@@ -133,7 +141,16 @@ public class BoardActivity extends ActionBarActivity {
                     //		내용 설정
                     boardDetailContent.setText(jsonObject.getString("content").trim().replaceAll("<br/>", "\n"));
 
+                    likeCount.setText("안타 " + jsonObject.getString("like"));
+                    dislikeCount.setText("아웃 " + jsonObject.getString("dislike"));
+
 //                    댓글 설정
+
+                    CommentListFragment fragment = new CommentListFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.commentContainer, fragment).commit();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("result", result);
+                    fragment.setArguments(bundle);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

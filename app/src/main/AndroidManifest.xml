@@ -46,6 +46,10 @@
             android:name="com.yjkim.board.BoardActivity"
             android:label="@string/title_activity_board" >
         </activity>
+        <activity
+            android:name="com.yjkim.board.BoardWriteActivity"
+            android:label="@string/title_activity_board_write" >
+        </activity>
     </application>
 
 </manifest>

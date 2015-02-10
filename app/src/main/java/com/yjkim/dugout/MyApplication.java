@@ -24,6 +24,7 @@ public class MyApplication extends Application {
     public static BasicHttpContext localContext = new BasicHttpContext();
     public static BasicCookieStore cookieStore = (BasicCookieStore) httpClient.getCookieStore();
     public static String favoriteGroupNumber;
+    public static String selectedGroupNumber;
 
     @Override
     public void onCreate() {
@@ -31,6 +32,7 @@ public class MyApplication extends Application {
         preferences = getSharedPreferences("preferences", MODE_PRIVATE);
         Log.d("MyApplication", "onCreate call");
         favoriteGroupNumber = preferences.getString("favoriteGroupNumber", "0");
+        selectedGroupNumber = favoriteGroupNumber;
     }
 
     public void setAppContext(Context mAppContext) {

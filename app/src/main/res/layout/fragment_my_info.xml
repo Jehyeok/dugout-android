@@ -72,7 +72,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@null"
-                            android:onClick="teamBtnClick"
                             android:padding="5dp"
                             android:scaleType="fitCenter"
                             android:tag="teamImageBtn" />
@@ -82,7 +81,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@null"
-                            android:onClick="teamBtnClick"
                             android:padding="5dp"
                             android:scaleType="fitCenter"
                             android:tag="teamImageBtn" />
@@ -92,7 +90,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@null"
-                            android:onClick="teamBtnClick"
                             android:padding="5dp"
                             android:scaleType="fitCenter"
                             android:tag="teamImageBtn" />
@@ -195,11 +192,13 @@
                     android:padding="10dp">
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/nickName"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/shape_radius_white" />
+                        android:background="@drawable/shape_radius_white"
+                        android:paddingLeft="10dp"
+                        android:textSize="13sp" />
 
                     <Button
                         android:id="@+id/button"
@@ -223,6 +222,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="내가 쓴 글" />
+
+                <FrameLayout
+                    android:id="@+id/my_boards_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"></FrameLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

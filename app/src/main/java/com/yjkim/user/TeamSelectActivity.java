@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -74,14 +75,34 @@ public class TeamSelectActivity extends ActionBarActivity {
         asyncTask.execute();
     }
 
-    public void teamBtnClick(View v) {
+    public void teamBtnClick(final View v) {
         Log.d("TeamSelectActivity", "teamNumber: " + v.getTag());
-        // 좋아하는 구단 팀 선택
-        SharedPreferences.Editor preferencesEditor = MyApplication.preferences.edit();
-        preferencesEditor.putString("favoriteGroupNumber", v.getTag() + "");
-        preferencesEditor.commit();
 
-        Intent mainActivity = new Intent(this, MainActivity.class);
-        startActivity(mainActivity);
+        String url = MyApplication.host + "groups/select";
+        String method = "POST";
+
+        AsyncHttpTask asyncTask = new AsyncHttpTask(MyApplication.httpClient, method, TeamSelectActivity.this);
+        asyncTask.setListener(new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(String result) {
+                if ("success".equals(result.trim())) {
+                    // 좋아하는 구단 팀 선택
+                    SharedPreferences.Editor preferencesEditor = MyApplication.preferences.edit();
+                    preferencesEditor.putString("favoriteGroupNumber", v.getTag() + "");
+                    MyApplication.favoriteGroupNumber = v.getTag() + "";
+                    preferencesEditor.commit();
+
+                    Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(mainActivity);
+                } else {
+                    toast = Toast.makeText(getApplicationContext(), result.trim(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            }
+        });
+        asyncTask.setUrl(url);
+//                파라미터 세팅
+        asyncTask.execute("group_number: " + v.getTag());
     }
 }

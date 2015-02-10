@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class BoardListFragment extends Fragment{
     private BoardListAdapter boardsAdapter;
     private AsyncHttpTask asyncTask;
     private List<Board> boardList;
+    private LinearLayout navbar;
     private ImageButton drawerToggleBtn;
     private ImageButton writeBtn;
     private TextView title;
@@ -51,16 +53,24 @@ public class BoardListFragment extends Fragment{
         drawerToggleBtn = (ImageButton) rootView.findViewById(R.id.drawerToggleBtn);
         writeBtn = (ImageButton) rootView.findViewById(R.id.writeBtn);
         title = (TextView) rootView.findViewById(R.id.title);
+        navbar = (LinearLayout) rootView.findViewById(R.id.navbar);
 
         if (getArguments().getString("url") == null) {
             url = MyApplication.host + "groups/" + this.groupNumber + "/boards";
 //            메뉴 보이게
+            MyApplication.selectedGroupNumber = this.groupNumber;
+            setNavBarVisibility(View.VISIBLE);
             setNavBar("게시판", View.VISIBLE);
+        } else if (getArguments().getString("url").equals("/my")){
+            url = MyApplication.host + "boards" + getArguments().getString("url");
+            setNavBarVisibility(View.GONE);
         } else {
             url = MyApplication.host + "boards" + getArguments().getString("url");
 //            메뉴 제거
+            setNavBarVisibility(View.VISIBLE);
             setNavBar("인기글", View.GONE);
         }
+
         final String method = "GET";
 
         boardList = new ArrayList<Board>();
@@ -100,9 +110,9 @@ public class BoardListFragment extends Fragment{
 
             @Override
             public void onClick(View v) {
-//                Intent boardWriteActivity = new Intent(getActivity(), BoardWriteActivity.class);
-//                startActivityForResult(boardWriteActivity, 0);
-//                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                Intent boardWriteActivity = new Intent(getActivity(), BoardWriteActivity.class);
+                startActivityForResult(boardWriteActivity, 0);
+                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
 
@@ -115,6 +125,10 @@ public class BoardListFragment extends Fragment{
         });
 
         return rootView;
+    }
+
+    private void setNavBarVisibility(int visibility) {
+        navbar.setVisibility(visibility);
     }
 
     private void setNavBar(String title, int visibility) {
@@ -175,7 +189,8 @@ public class BoardListFragment extends Fragment{
     public void onActivityResult(int reqCode, int resCode, Intent data) {
         super.onActivityResult(reqCode, resCode, data);
         if (resCode == getActivity().RESULT_OK) {
-            boardsAdapter.notifyDataSetChanged();
+//            boardsAdapter.notifyDataSetChanged();
+            loadBoardData(url, "GET");
         }
     }
 }
