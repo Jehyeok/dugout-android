@@ -1,5 +1,7 @@
-package com.yjkim.dugout;
+package com.yjkim.user;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -8,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.yjkim.dugout.MainActivity;
+import com.yjkim.dugout.MyApplication;
+import com.yjkim.dugout.R;
 import com.yjkim.util.AsyncHttpTask;
 import com.yjkim.util.OnTaskCompleted;
 import com.yjkim.util.TeamMapper;
@@ -54,7 +59,7 @@ public class TeamSelectActivity extends ActionBarActivity {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ImageButton teamImageBtn = (ImageButton) views.get(i);
                         int teamNumber = jsonObject.getInt("number");
-                        teamImageBtn.setImageResource(TeamMapper.teamDrawableNumberList.get(teamNumber));
+                        teamImageBtn.setImageResource(TeamMapper.getInstance().getImageNumber(teamNumber));
 //                        팀 넘버
                         teamImageBtn.setTag(teamNumber);
                     }
@@ -71,6 +76,12 @@ public class TeamSelectActivity extends ActionBarActivity {
 
     public void teamBtnClick(View v) {
         Log.d("TeamSelectActivity", "teamNumber: " + v.getTag());
+        // 좋아하는 구단 팀 선택
+        SharedPreferences.Editor preferencesEditor = MyApplication.preferences.edit();
+        preferencesEditor.putString("favoriteGroupNumber", v.getTag() + "");
+        preferencesEditor.commit();
 
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        startActivity(mainActivity);
     }
 }

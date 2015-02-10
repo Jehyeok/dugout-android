@@ -1,4 +1,4 @@
-package com.yjkim.dugout;
+package com.yjkim.user;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.yjkim.dugout.MyApplication;
+import com.yjkim.dugout.R;
 import com.yjkim.util.AsyncHttpTask;
 import com.yjkim.util.OnTaskCompleted;
 

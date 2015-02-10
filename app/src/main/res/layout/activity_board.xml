@@ -1,0 +1,212 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/boardActivityLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navi_bar_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/navi_background">
+
+        <ImageButton
+            android:id="@+id/boardDetailBackBtn"
+            android:layout_width="@dimen/navi_bar_height"
+            android:layout_height="@dimen/navi_bar_height"
+            android:background="@null"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_back_btn" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="게시판"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:layout_width="@dimen/navi_bar_height"
+            android:layout_height="@dimen/navi_bar_height"
+            android:background="@null"
+            android:padding="10dp"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/writeComment"
+        android:layout_below="@+id/navbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f0eef0"
+                android:orientation="vertical"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:id="@+id/boardDetailTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:text="익명게시판 런칭했습니다."
+                        android:textColor="#444444"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:id="@+id/boardDetailNickName"
+                        style="@style/RowBoardSubInfo"
+                        android:text="천재개발자"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#979797"></LinearLayout>
+
+                    <TextView
+                        android:id="@+id/boardDetailUpdatedAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23:16:49"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#979797"></LinearLayout>
+
+                    <TextView
+                        android:id="@+id/boardDetailLike"
+                        style="@style/RowBoardSubInfo"
+                        android:text="추천 3"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#979797"></LinearLayout>
+
+                    <TextView
+                        android:id="@+id/boardDetailCount"
+                        style="@style/RowBoardSubInfo"
+                        android:text="조회 117"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/boardDetailContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:padding="15dp"
+                    android:text="내용이다!" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/white"
+                    android:padding="10dp"
+                    android:gravity="center_horizontal">
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/commentContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/writeComment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#66000000"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/commentContent"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_radius_white"
+                android:hint="내용"
+                android:paddingLeft="10dp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:id="@+id/writeCommentBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:text="전송"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

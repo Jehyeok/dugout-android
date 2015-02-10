@@ -1,17 +1,17 @@
-package com.yjkim.dugout;
+package com.yjkim.user;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.yjkim.dugout.MyApplication;
+import com.yjkim.dugout.R;
 import com.yjkim.util.AsyncHttpTask;
 import com.yjkim.util.OnTaskCompleted;
 

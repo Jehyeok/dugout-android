@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/navi_bar_height"
+                android:background="@color/navi_background">
+
+                <ImageButton
+                    android:id="@+id/drawerToggleBtn"
+                    android:layout_width="@dimen/navi_bar_height"
+                    android:layout_height="@dimen/navi_bar_height"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="내정보"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/writeBtn"
+                    android:layout_width="@dimen/navi_bar_height"
+                    android:layout_height="@dimen/navi_bar_height"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:scaleType="centerInside" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyInfoMenuTitle"
+                    android:text="구단 선택" />
+
+                <LinearLayout
+                    android:id="@+id/teamWrapper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:onClick="teamBtnClick"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:onClick="teamBtnClick"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:onClick="teamBtnClick"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_3"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_4"
+                            android:tag="teamImageBtn" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_5"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_6"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_7"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_8"
+                            android:tag="teamImageBtn" />
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_9"
+                            android:tag="teamImageBtn" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyInfoMenuTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="닉네임 설정" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <EditText
+                        android:id="@+id/editText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_radius_white" />
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/shape_radius_blue"
+                        android:text="변경"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyInfoMenuTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="내가 쓴 글" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
