@@ -1,5 +1,6 @@
 package com.yjkim.board;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
 import com.yjkim.util.AsyncHttpTask;
 import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.util.TeamMapper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,6 +64,9 @@ public class BoardListFragment extends Fragment{
             MyApplication.selectedGroupNumber = this.groupNumber;
             setNavBarVisibility(View.VISIBLE);
             setNavBar("게시판", View.VISIBLE);
+            //        워터마크 세팅
+            ImageView waterMark = (ImageView) rootView.findViewById(R.id.waterMark);
+            waterMark.setBackgroundResource(TeamMapper.getInstance().getWaterImageNumber(new Integer(groupNumber)));
         } else if (getArguments().getString("url").equals("/my")){
             url = MyApplication.host + "boards" + getArguments().getString("url");
             setNavBarVisibility(View.GONE);

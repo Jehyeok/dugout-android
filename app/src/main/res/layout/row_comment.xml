@@ -50,13 +50,20 @@
                     android:textColor="#969696"
                     android:textSize="12sp" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="답글"
-                    android:textAlignment="gravity"
-                    android:textSize="12sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/replyBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:text="답글"
+                        android:textAlignment="gravity"
+                        android:textSize="12sp" />
+                </LinearLayout>
             </LinearLayout>
 
 

@@ -49,10 +49,8 @@ public class BoardListAdapter extends ArrayAdapter<Board> {
 //			공지 여부 설정
             if (board.isNotice()) {
                 titleText += "<font color=#A776B5>[공지] </font>";
-                cv.setBackgroundColor(Color.parseColor("#e6e6e6"));
-            } else {
-                cv.setBackgroundColor(Color.WHITE);
             }
+
             titleText += board.getTitle();
             Log.d("BoardListAdapter", "commentLength: " + board.getCommentSize());
             titleText += " <font color=#3daed5>[" + board.getCommentSize().toString().trim() + "]";

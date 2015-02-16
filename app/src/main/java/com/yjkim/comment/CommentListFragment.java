@@ -1,7 +1,6 @@
 package com.yjkim.comment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.yjkim.board.BoardActivity;
 import com.yjkim.dugout.R;
 import com.yjkim.util.DateTimeConvertor;
 
@@ -31,16 +32,20 @@ public class CommentListFragment extends Fragment {
     private LinearLayout commentListView;
     private List<Comment> commentList = new ArrayList<Comment>();
     private String result;
+    private String boardId;
+    private Toast toast;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.rootView = inflater.inflate(R.layout.fragment_comment_list, container, false);
         commentListView = (LinearLayout) rootView.findViewById(R.id.commentListView);
         result = getArguments().getString("result");
+        boardId = getArguments().getString("boardId");
 
         JSONArray jsonArray = new JSONArray();
         try {
-            jsonArray = new JSONObject(result).getJSONArray("comments");
+            jsonArray = new JSONObject(result).getJSONArray("ordered_comments");
         } catch (Exception e1) {
             Log.e("UsersFragment", "JSON 변환 중 에러");
         }
@@ -63,13 +68,13 @@ public class CommentListFragment extends Fragment {
 
         Log.d("CommentListFrag", "comments.size: " + commentList.size());
 
-        for (Comment comment : commentList) {
+        for (final Comment comment : commentList) {
             Log.d("CommentListFrag", "comment.nicknamee:" + comment.getNickName());
             LayoutInflater rowInflater = null;
             rowInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View commentRow = rowInflater.inflate(R.layout.row_comment, null);
 
-            TextView commentContent = (TextView) commentRow.findViewById(R.id.commentContent);
+            final TextView commentContent = (TextView) commentRow.findViewById(R.id.commentContent);
             TextView commentNickName = (TextView) commentRow.findViewById(R.id.commentNickName);
             TextView commentUpdatedAt = (TextView) commentRow.findViewById(R.id.commentUpdatedAt);
             ImageView replyArrow = (ImageView) commentRow.findViewById(R.id.replyArrow);
@@ -90,6 +95,16 @@ public class CommentListFragment extends Fragment {
             if (comment.getDepth() == 0) {
                 replyArrow.setVisibility(View.GONE);
             }
+
+//            대댓글 달기
+            TextView replyBtn = (TextView) commentRow.findViewById(R.id.replyBtn);
+            replyBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((BoardActivity)getActivity()).setCommentParent(comment.getId());
+                    ((BoardActivity)getActivity()).focuseCommentField();
+                }
+            });
 
             commentListView.addView(commentRow);
         }

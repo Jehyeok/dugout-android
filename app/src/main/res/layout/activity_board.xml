@@ -28,16 +28,21 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <ImageButton
+        <Button
+            android:id="@+id/closeCommentContent"
             android:layout_width="@dimen/navi_bar_height"
             android:layout_height="@dimen/navi_bar_height"
             android:background="@null"
-            android:padding="10dp"
-            android:scaleType="centerInside" />
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:scaleType="centerInside"
+            android:visibility="invisible"
+            android:text="닫기"
+            android:textColor="@color/white" />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/boardDetailScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/writeComment"
@@ -251,7 +256,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 
     <LinearLayout
         android:id="@+id/writeComment"

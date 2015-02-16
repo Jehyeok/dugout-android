@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -55,6 +56,37 @@ public class MyInfoFragment extends Fragment {
 
 //        닉네임 기본 설정
         nickName = (EditText) rootView.findViewById(R.id.nickName);
+        Button changeNickName = (Button) rootView.findViewById(R.id.changeNickName);
+        changeNickName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ("".equals(nickName.getText().toString().trim())) {
+                    toast = Toast.makeText(getActivity(), "변경할 닉네임을 입력해주세요", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                } else {
+                    AsyncHttpTask asyncTask = new AsyncHttpTask(MyApplication.httpClient, "POST", getActivity());
+                    asyncTask.setListener(new OnTaskCompleted() {
+                        @Override
+                        public void onTaskCompleted(String result) {
+                            if ("success".equals(result.trim())) {
+                                nickName.setText("");
+                            } else {
+                                toast = Toast.makeText(getActivity(), result.trim(), Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                            }
+                        }
+                    });
+                    asyncTask.setUrl(MyApplication.host + "users/change_nick_name");
+//                파라미터 세팅
+                    asyncTask.execute(
+                            "will_nick_name: " + nickName.getText().toString()
+                    );
+                }
+            }
+        });
+
         return rootView;
     }
 

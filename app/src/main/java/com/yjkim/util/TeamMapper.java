@@ -2,6 +2,7 @@ package com.yjkim.util;
 
 import com.yjkim.dugout.R;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ import java.util.HashMap;
  */
 public class TeamMapper {
     private static final TeamMapper teamMapper = new TeamMapper();
+    private ArrayList<Integer> teamDrawableWaterNumberList = new ArrayList<Integer>();
 
     private ArrayList<Integer> teamDrawableNumberList = new ArrayList<Integer>();
 
@@ -31,6 +33,17 @@ public class TeamMapper {
         teamDrawableNumberList.add(R.drawable.ic_7);
         teamDrawableNumberList.add(R.drawable.ic_8);
         teamDrawableNumberList.add(R.drawable.ic_9);
+//        이미지 워터마크 세팅
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
+        teamDrawableWaterNumberList.add(R.drawable.ic_water_bears_0);
 //        팀네임 세팅
         teamNameMap.put("0", "베어즈");
         teamNameMap.put("1", "이글즈");
@@ -50,5 +63,8 @@ public class TeamMapper {
 
     public Integer getImageNumber(Integer groupNumber) {
         return teamDrawableNumberList.get(groupNumber);
+    }
+    public Integer getWaterImageNumber(Integer groupNumber) {
+        return teamDrawableWaterNumberList.get(groupNumber);
     }
 }

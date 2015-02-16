@@ -1,32 +1,31 @@
 package com.yjkim.board;
 
-import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.yjkim.comment.CommentListFragment;
-import com.yjkim.drawer.DrawerElement;
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
 import com.yjkim.util.AsyncHttpTask;
 import com.yjkim.util.DateTimeConvertor;
 import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.util.ViewManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +33,11 @@ public class BoardActivity extends ActionBarActivity {
 
     private Toast toast;
     private Bundle extras;
+    private PullToRefreshScrollView boardDetailScrollView;
+    private Integer parentCommentId = null;
+    private Button writeCommentBtn;
+    private EditText commentContent;
+    private Button closeCommentContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +53,24 @@ public class BoardActivity extends ActionBarActivity {
                 finish();
             }
         });
-
 //        댓글 달기
-        Button writeCommentBtn = (Button) findViewById(R.id.writeCommentBtn);
-        final EditText commentContent = (EditText) findViewById(R.id.commentContent);
+        writeCommentBtn = (Button) findViewById(R.id.writeCommentBtn);
+        commentContent = (EditText) findViewById(R.id.commentContent);
+        closeCommentContent = (Button) findViewById(R.id.closeCommentContent);
+
+        commentContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                commentContent.requestFocus();
+            }
+        });
+
+        closeCommentContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                didWriteComment();
+            }
+        });
 
         writeCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,14 +83,13 @@ public class BoardActivity extends ActionBarActivity {
                     @Override
                     public void onTaskCompleted(String result) {
                         if ("fail".equals(result.trim())) {
-//                            글쓰기 실패
+//                            댓글쓰기 실패
                             toast = Toast.makeText(getApplicationContext(), "댓글달기에 실패했습니다", Toast.LENGTH_SHORT);
                             toast.setGravity(Gravity.CENTER, 0, 0);
                             toast.show();
                         } else {
-//                            글쓰기 성공
-                            commentContent.setText("");
-                            hideSoftKeyboard(BoardActivity.this);
+//                            댓글쓰기 성공
+                            didWriteComment();
                             loadData(MyApplication.host + "groups/0/boards/" + extras.getString("boardId"), "GET");
                         }
                     }
@@ -80,19 +97,77 @@ public class BoardActivity extends ActionBarActivity {
                 asyncTask.setUrl(url);
 //                파라미터 세팅
                 asyncTask.execute(
-                        "content: " + commentContent.getText().toString()
+                        "content: " + commentContent.getText().toString(),
+                        "comment_parent_id: " + (parentCommentId != null ? parentCommentId : "")
                 );
             }
         });
 
+//        pullToReresh
+
+        boardDetailScrollView = (PullToRefreshScrollView) findViewById(R.id.boardDetailScrollView);
+        boardDetailScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ScrollView> scrollViewPullToRefreshBase) {
+                loadData(MyApplication.host + "groups/0/boards/" + extras.getString("boardId"), "GET");
+            }
+        });
+
+//        안타, 아웃
+        LinearLayout like = (LinearLayout) findViewById(R.id.like);
+        LinearLayout disLike = (LinearLayout) findViewById(R.id.disLike);
+
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeOrDisklike(MyApplication.host + "boards/" + extras.getString("boardId") + "/like");
+            }
+        });
+
+        disLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeOrDisklike(MyApplication.host + "boards/" + extras.getString("boardId") + "/dislike");
+            }
+        });
+
         //        키보드 숨기기
-        setupUI(findViewById(R.id.boardActivityLayout));
+//        ViewManager.setupUI(findViewById(R.id.boardActivityLayout), BoardActivity.this);
 
 //        게시글 & 댓글 로드
         loadData(MyApplication.host + "groups/0/boards/" + extras.getString("boardId"), "GET");
     }
 
+    private void didWriteComment() {
+        parentCommentId = null;
+        commentContent.setText("");
+        ViewManager.hideSoftKeyboard(this);
+        closeCommentContent.setVisibility(View.INVISIBLE);
+    }
+
+    public void likeOrDisklike(String url) {
+        AsyncHttpTask asyncTask = new AsyncHttpTask(MyApplication.httpClient, "POST", BoardActivity.this);
+        asyncTask.setListener(new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(String result) {
+                if ("success".equals(result.trim())) {
+//                    좋아요 성공
+                    loadData(MyApplication.host + "groups/0/boards/" + extras.getString("boardId"), "GET");
+                } else {
+                    //                            좋아요 실패
+                    toast = Toast.makeText(getApplicationContext(), result.trim(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            }
+        });
+        asyncTask.setUrl(url);
+//                파라미터 세팅
+        asyncTask.execute();
+    }
+
     public void loadData(String url, String method) {
+//        AsyncHttpTask asyncTask = new AsyncHttpTask(MyApplication.httpClient, method, getApplicationContext());
         AsyncHttpTask asyncTask = new AsyncHttpTask(MyApplication.httpClient, method, BoardActivity.this);
         asyncTask.setListener(new OnTaskCompleted() {
             @Override
@@ -145,12 +220,14 @@ public class BoardActivity extends ActionBarActivity {
                     dislikeCount.setText("아웃 " + jsonObject.getString("dislike"));
 
 //                    댓글 설정
-
                     CommentListFragment fragment = new CommentListFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.commentContainer, fragment).commit();
                     Bundle bundle = new Bundle();
                     bundle.putString("result", result);
+                    bundle.putString("boardId", extras.getString("boardId"));
                     fragment.setArguments(bundle);
+
+                    boardDetailScrollView.onRefreshComplete();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -160,41 +237,19 @@ public class BoardActivity extends ActionBarActivity {
         asyncTask.execute();
     }
 
-    public void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-    }
-
-    public void setupUI(View view) {
-
-        //Set up touch listener for non-text box views to hide keyboard.
-        if (!(view instanceof EditText)) {
-
-            view.setOnTouchListener(new View.OnTouchListener() {
-
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(BoardActivity.this);
-                    return false;
-                }
-
-            });
-        }
-
-        //If a layout container, iterate over children and seed recursion.
-        if (view instanceof ViewGroup) {
-
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-
-                View innerView = ((ViewGroup) view).getChildAt(i);
-
-                setupUI(innerView);
-            }
-        }
-    }
-
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+    }
+
+    public void setCommentParent(Integer id) {
+        this.parentCommentId = id;
+    }
+
+    public void focuseCommentField() {
+        closeCommentContent.setVisibility(View.VISIBLE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(commentContent, InputMethodManager.SHOW_IMPLICIT);
     }
 }
