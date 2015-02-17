@@ -1,21 +1,33 @@
 package com.yjkim.board;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.yjkim.comment.CommentListFragment;
@@ -25,7 +37,9 @@ import com.yjkim.util.AsyncHttpTask;
 import com.yjkim.util.DateTimeConvertor;
 import com.yjkim.util.OnTaskCompleted;
 import com.yjkim.util.ViewManager;
+import com.yjkim.util.VolleySingleton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,11 +52,15 @@ public class BoardActivity extends ActionBarActivity {
     private Button writeCommentBtn;
     private EditText commentContent;
     private Button closeCommentContent;
+    private LinearLayout contentImagesWrapper;
+    private ImageLoader mImageLoader = VolleySingleton.getInstance().getImageLoader();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
+        contentImagesWrapper = (LinearLayout) findViewById(R.id.contentImagesWrapper);
+
         extras = getIntent().getExtras();
 
         ImageButton boardDetailBackBtn = (ImageButton) findViewById(R.id.boardDetailBackBtn);
@@ -61,7 +79,7 @@ public class BoardActivity extends ActionBarActivity {
         commentContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                commentContent.requestFocus();
+                focuseCommentField();
             }
         });
 
@@ -141,6 +159,7 @@ public class BoardActivity extends ActionBarActivity {
     private void didWriteComment() {
         parentCommentId = null;
         commentContent.setText("");
+        commentContent.clearFocus();
         ViewManager.hideSoftKeyboard(this);
         closeCommentContent.setVisibility(View.INVISIBLE);
     }
@@ -227,6 +246,29 @@ public class BoardActivity extends ActionBarActivity {
                     bundle.putString("boardId", extras.getString("boardId"));
                     fragment.setArguments(bundle);
 
+//                    이미지 세팅
+                    JSONArray imageNames = jsonObject.getJSONArray("image_names");
+                    contentImagesWrapper.removeAllViews();
+                    for (int i = 0; i < imageNames.length(); i++) {
+                        final ImageView niv = new ImageView(BoardActivity.this);
+                        String imageUrl = MyApplication.host + "/assets/" + imageNames.get(i);
+                        mImageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                            @Override
+                            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                                if (response.getBitmap() != null) {
+                                    niv.setImageBitmap(response.getBitmap());
+                                    contentImagesWrapper.addView(niv);
+                                    scaleImage(niv);
+                                }
+                            }
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        });
+                    }
+
                     boardDetailScrollView.onRefreshComplete();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -251,5 +293,51 @@ public class BoardActivity extends ActionBarActivity {
         closeCommentContent.setVisibility(View.VISIBLE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(commentContent, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void scaleImage(ImageView view) {
+        // Get the ImageView and its bitmap
+        Drawable drawing = view.getDrawable();
+
+        if (drawing == null) {
+            return; // Checking for null & return, as suggested in comments
+        }
+
+        Bitmap bitmap = ((BitmapDrawable) drawing).getBitmap();
+
+        // Get current dimensions AND the desired bounding box
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+//        int bounding = dpToPx(250);
+        DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+        int bounding = metrics.widthPixels;
+
+        // Determine how much to scale: the dimension requiring less scaling is
+        // closer to the its side. This way the image always stays inside your
+        // bounding box AND either x/y axis touches it.
+        float xScale = ((float) bounding) / width;
+        float yScale = ((float) bounding) / height;
+        float scale = (xScale <= yScale) ? xScale : yScale;
+
+        // Create a matrix for the scaling and add the scaling data
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        // Create a new bitmap and convert it to a format understood by the ImageView
+        Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        width = scaledBitmap.getWidth(); // re-use
+        height = scaledBitmap.getHeight(); // re-use
+        BitmapDrawable result = new BitmapDrawable(scaledBitmap);
+        Log.i("Test", "scaled width = " + Integer.toString(width));
+        Log.i("Test", "scaled height = " + Integer.toString(height));
+
+        // Apply the scaled bitmap
+        view.setImageDrawable(result);
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        params.bottomMargin = 20;
+        view.setLayoutParams(params);
     }
 }

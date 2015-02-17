@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.yjkim.dugout.MyApplication;
+
 import java.util.ArrayList;
 
 /**
@@ -63,5 +65,10 @@ public class ViewManager {
                 setupUI(innerView, activity);
             }
         }
+    }
+
+    public static int dpToPx(int dp) {
+        float density = MyApplication.mAppContext.getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
     }
 }

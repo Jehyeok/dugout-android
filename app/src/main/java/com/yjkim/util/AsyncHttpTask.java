@@ -15,13 +15,17 @@ import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 /**
  * Created by jehyeok on 2/6/15.
@@ -72,13 +76,23 @@ public class AsyncHttpTask extends AsyncTask<String, String, Void> {
                     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 //              왜하는거지 이건 ?
                     builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                    builder.setCharset(Charset.forName("UTF-8"));
 
                     for (String param : params) {
                         String[] keyValueSet = param.split(":");
                         String key = keyValueSet[0].trim();
                         String value = keyValueSet[1].trim();
 
-                        builder.addTextBody(key, value, utf8Type);
+//                        파일 업로드
+                        if (key.contains("#file")) {
+                            Log.d("AysncHttp", "file: " + value);
+                            File file = new File(value);
+                            builder.addPart(key, new FileBody(file, ContentType.DEFAULT_BINARY));
+//                        텍스트 업로드
+                        } else {
+//                            builder.addTextBody(key, value, utf8Type);
+                            builder.addPart(key, new StringBody(value, ContentType.MULTIPART_FORM_DATA));
+                        }
                         httpPost.setEntity(builder.build());
                     }
                 }

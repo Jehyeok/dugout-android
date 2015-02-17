@@ -3,9 +3,7 @@
     package="com.yjkim.dugout">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -27,22 +25,22 @@
         </activity>
         <activity
             android:name="com.yjkim.user.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
         <activity
             android:name="com.yjkim.user.SignupActivity"
-            android:label="@string/title_activity_signup"></activity>
+            android:label="@string/title_activity_signup" />
         <activity
             android:name="com.yjkim.user.TeamSelectActivity"
-            android:label="@string/title_activity_team_select"></activity>
+            android:label="@string/title_activity_team_select" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"></activity>
+            android:label="@string/title_activity_main" />
         <activity
             android:name="com.yjkim.board.BoardActivity"
-            android:label="@string/title_activity_board"></activity>
+            android:label="@string/title_activity_board" />
         <activity
             android:name="com.yjkim.board.BoardWriteActivity"
-            android:label="@string/title_activity_board_write"></activity>
+            android:label="@string/title_activity_board_write" />
     </application>
 
 </manifest>
