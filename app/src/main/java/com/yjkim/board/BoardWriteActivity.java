@@ -77,17 +77,8 @@ public class BoardWriteActivity extends ActionBarActivity {
 
                 if (images.size() != 0) {
                     for (int i = 0; i < images.size(); i++) {
-//                        ImageView iv = images.get(i);
-                        //Convert bitmap to byte array
-//                        Bitmap bitmap = ((BitmapDrawable) iv.getDrawable()).getBitmap();
-//                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-//                        byte[] bitmapdata = bos.toByteArray();
-//                        Log.d("BoardWriteActivity", "path: " + images.get(i).getPath());
                         Log.d("BoardWriteActivity", "path: " + getRealPathFromURI(images.get(i)));
-//                        params.add("#file" + i + ": " + images.get(i).getPath());
                         params.add("#file" + i + ": " + getRealPathFromURI(images.get(i)));
-
                     }
                 }
                 asyncTask.execute(params.toArray(new String[params.size()]));
@@ -172,8 +163,7 @@ public class BoardWriteActivity extends ActionBarActivity {
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
-    public String getRealPathFromURI(Uri contentUri)
-    {
+    public String getRealPathFromURI(Uri contentUri) {
         // can post image
         String [] proj={MediaStore.Images.Media.DATA};
 

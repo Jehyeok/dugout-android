@@ -12,5 +12,6 @@
     <string name="title_activity_board">BoardActivity</string>
     <string name="title_activity_board_write">BoardWriteActivity</string>
     <string name="title_activity_android_custom_gallery">AndroidCustomGalleryActivity</string>
+    <string name="title_activity_view_pager">ViewPagerActivity</string>
 
 </resources>

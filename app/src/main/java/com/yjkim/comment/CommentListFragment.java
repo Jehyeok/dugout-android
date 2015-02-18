@@ -1,6 +1,8 @@
 package com.yjkim.comment;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,14 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.yjkim.board.BoardActivity;
+import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
 import com.yjkim.util.DateTimeConvertor;
+import com.yjkim.util.ViewManager;
+import com.yjkim.util.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +44,7 @@ public class CommentListFragment extends Fragment {
     private String result;
     private String boardId;
     private Toast toast;
+    private ImageLoader mImageLoader = VolleySingleton.getInstance().getImageLoader();
 
 
     @Override
@@ -53,12 +64,21 @@ public class CommentListFragment extends Fragment {
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                ArrayList<String> imageNames = new ArrayList<String>();
+                JSONArray jarray = jsonObject.getJSONArray("image_names");
+
+                for (int j = 0; j < jarray.length(); j++) {
+                    imageNames.add(jarray.get(j).toString());
+                }
+
                 commentList.add(new Comment(
                                 jsonObject.getInt("id"),
                                 jsonObject.getInt("depth"),
                                 jsonObject.getString("updated_at"),
                                 jsonObject.getString("content"),
-                                jsonObject.getString("user_nick_name")
+                                jsonObject.getString("user_nick_name"),
+                                imageNames
                         )
                 );
             } catch (JSONException e) {
@@ -102,13 +122,55 @@ public class CommentListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((BoardActivity)getActivity()).setCommentParent(comment.getId());
-                    ((BoardActivity)getActivity()).focuseCommentField();
+                    ((BoardActivity)getActivity()).focusCommentField();
                 }
             });
+
+//            사진 올리기
+            final LinearLayout imagesWrapper = (LinearLayout) commentRow.findViewById(R.id.imagesWrapper);
+
+            //                    이미지 세팅
+            ArrayList<String> imageNames = comment.getImageNames();
+            imagesWrapper.removeAllViews();
+
+            if (imageNames.size() != 0) {
+                imagesWrapper.setVisibility(View.VISIBLE);
+            }
+
+            for (int i = 0; i < imageNames.size(); i++) {
+                final ImageView niv = new ImageView(getActivity());
+                String imageUrl = MyApplication.host + "/assets/" + imageNames.get(i);
+                mImageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        if (response.getBitmap() != null) {
+                            niv.setImageBitmap(response.getBitmap());
+                            imagesWrapper.addView(niv);
+                            scaleImage(niv);
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+            }
 
             commentListView.addView(commentRow);
         }
 
         return rootView;
     }
+
+    private void scaleImage(ImageView niv) {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) niv.getLayoutParams();
+        lp.width = ViewManager.dpToPx(100);
+        lp.height = ViewManager.dpToPx(100);
+        niv.setScaleType(ImageView.ScaleType.FIT_XY);
+        int margin = ViewManager.dpToPx(10);
+        lp.setMargins(margin, margin, margin, margin);
+        niv.setLayoutParams(lp);
+    }
+
 }

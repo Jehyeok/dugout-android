@@ -79,6 +79,23 @@
                     android:textColor="#1E1E1E"
                     android:textSize="12sp" />
             </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/imagesWrapper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"></LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
     </LinearLayout>
 

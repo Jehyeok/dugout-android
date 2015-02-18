@@ -1,5 +1,7 @@
 package com.yjkim.comment;
 
+import java.util.ArrayList;
+
 /**
  * Created by jehyeok on 2/11/15.
  */
@@ -14,12 +16,15 @@ public class Comment {
 
     private String nickName;
 
-    public Comment(Integer id, Integer depth, String updatedAt, String content, String nickName) {
+    private ArrayList<String> imageNames = new ArrayList<String>();
+
+    public Comment(Integer id, Integer depth, String updatedAt, String content, String nickName, ArrayList<String> imageNames) {
         this.id = id;
         this.depth = depth;
         this.updatedAt = updatedAt;
         this.content = content;
         this.nickName = nickName;
+        this.imageNames = imageNames;
     }
 
     public Integer getId() {
@@ -40,5 +45,9 @@ public class Comment {
 
     public String getNickName() {
         return nickName;
+    }
+
+    public ArrayList<String> getImageNames() {
+        return imageNames;
     }
 }
