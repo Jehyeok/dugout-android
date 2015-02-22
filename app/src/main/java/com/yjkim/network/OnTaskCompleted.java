@@ -1,4 +1,4 @@
-package com.yjkim.util;
+package com.yjkim.network;
 
 /**
  * Created by jehyeok on 2/6/15.

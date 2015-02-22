@@ -1,6 +1,7 @@
 package com.yjkim.comment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.yjkim.board.BoardActivity;
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
+import com.yjkim.dugout.ViewPagerActivity;
 import com.yjkim.util.DateTimeConvertor;
 import com.yjkim.util.ViewManager;
 import com.yjkim.util.VolleySingleton;
@@ -121,8 +123,8 @@ public class CommentListFragment extends Fragment {
             replyBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((BoardActivity)getActivity()).setCommentParent(comment.getId());
-                    ((BoardActivity)getActivity()).focusCommentField();
+                    ((BoardActivity) getActivity()).setCommentParent(comment.getId());
+                    ((BoardActivity) getActivity()).focusCommentField();
                 }
             });
 
@@ -137,8 +139,10 @@ public class CommentListFragment extends Fragment {
                 imagesWrapper.setVisibility(View.VISIBLE);
             }
 
+            final ArrayList<String> imageNamesList = new ArrayList<String>();
             for (int i = 0; i < imageNames.size(); i++) {
                 final ImageView niv = new ImageView(getActivity());
+                imageNamesList.add(imageNames.get(i).toString());
                 String imageUrl = MyApplication.host + "/assets/" + imageNames.get(i);
                 mImageLoader.get(imageUrl, new ImageLoader.ImageListener() {
                     @Override
@@ -147,6 +151,14 @@ public class CommentListFragment extends Fragment {
                             niv.setImageBitmap(response.getBitmap());
                             imagesWrapper.addView(niv);
                             scaleImage(niv);
+                            niv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent viewPagerActivity = new Intent(getActivity(), ViewPagerActivity.class);
+                                    viewPagerActivity.putStringArrayListExtra("imageNames", imageNamesList);
+                                    startActivity(viewPagerActivity);
+                                }
+                            });
                         }
                     }
 

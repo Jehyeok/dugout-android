@@ -14,8 +14,8 @@ import android.widget.Toast;
 import com.yjkim.dugout.MainActivity;
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
-import com.yjkim.util.AsyncHttpTask;
-import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.network.AsyncHttpTask;
+import com.yjkim.network.OnTaskCompleted;
 import com.yjkim.util.TeamMapper;
 import com.yjkim.util.ViewManager;
 

@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
-import com.yjkim.util.AsyncHttpTask;
-import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.network.AsyncHttpTask;
+import com.yjkim.network.OnTaskCompleted;
 
 
 public class SignupActivity extends ActionBarActivity {

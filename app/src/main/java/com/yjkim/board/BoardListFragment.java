@@ -1,6 +1,5 @@
 package com.yjkim.board;
 
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,8 +21,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
-import com.yjkim.util.AsyncHttpTask;
-import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.network.AsyncHttpTask;
+import com.yjkim.network.OnTaskCompleted;
 import com.yjkim.util.TeamMapper;
 
 import org.json.JSONArray;

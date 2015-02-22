@@ -1,4 +1,4 @@
-package com.yjkim.util;
+package com.yjkim.network;
 
 import android.content.Context;
 import android.os.AsyncTask;

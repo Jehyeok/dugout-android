@@ -1,6 +1,5 @@
 package com.yjkim.user;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,11 +17,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.yjkim.board.BoardListFragment;
-import com.yjkim.dugout.MainActivity;
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
-import com.yjkim.util.AsyncHttpTask;
-import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.network.AsyncHttpTask;
+import com.yjkim.network.OnTaskCompleted;
 import com.yjkim.util.TeamMapper;
 import com.yjkim.util.ViewManager;
 

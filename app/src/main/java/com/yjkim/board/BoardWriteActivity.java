@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,8 +21,8 @@ import android.widget.Toast;
 
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
-import com.yjkim.util.AsyncHttpTask;
-import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.network.AsyncHttpTask;
+import com.yjkim.network.OnTaskCompleted;
 import com.yjkim.util.ViewManager;
 
 import java.util.ArrayList;

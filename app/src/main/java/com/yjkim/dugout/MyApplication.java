@@ -17,7 +17,7 @@ import org.apache.http.protocol.BasicHttpContext;
 public class MyApplication extends Application {
 //    public static final String host = "http://54.148.125.13:3000/";
 //    public static final String host = "http://10.0.3.2:3000/";
-	public static final String host = "http://222.116.21.35:3000/";
+	public static final String host = "http://222.116.21.42:3000/";
     public static SharedPreferences preferences;
     public static Context mAppContext;
     public static DefaultHttpClient httpClient = new DefaultHttpClient();

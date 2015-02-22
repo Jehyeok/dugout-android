@@ -14,8 +14,8 @@ import com.yjkim.board.BoardListFragment;
 import com.yjkim.drawer.DrawerAdapter;
 import com.yjkim.drawer.DrawerElement;
 import com.yjkim.user.MyInfoFragment;
-import com.yjkim.util.AsyncHttpTask;
-import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.network.AsyncHttpTask;
+import com.yjkim.network.OnTaskCompleted;
 
 import org.json.JSONArray;
 import org.json.JSONException;

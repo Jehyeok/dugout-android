@@ -9,9 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
@@ -40,9 +38,9 @@ import com.yjkim.comment.CommentListFragment;
 import com.yjkim.dugout.MyApplication;
 import com.yjkim.dugout.R;
 import com.yjkim.dugout.ViewPagerActivity;
-import com.yjkim.util.AsyncHttpTask;
+import com.yjkim.network.AsyncHttpTask;
 import com.yjkim.util.DateTimeConvertor;
-import com.yjkim.util.OnTaskCompleted;
+import com.yjkim.network.OnTaskCompleted;
 import com.yjkim.util.ViewManager;
 import com.yjkim.util.VolleySingleton;
 
@@ -354,7 +352,6 @@ public class BoardActivity extends ActionBarActivity {
                                         @Override
                                         public void onClick(View v) {
                                             Intent viewPagerActivity = new Intent(BoardActivity.this, ViewPagerActivity.class);
-//                                            viewPagerActivity.putParcelableArrayListExtra("imageNames", ArrayList<T extends Parcelable > imageNamesList);
                                             viewPagerActivity.putStringArrayListExtra("imageNames", imageNamesList);
                                             startActivity(viewPagerActivity);
                                         }
